@@ -79,12 +79,10 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
 
 extension MovieQuizViewController {
     private func showLoadingIndicator() {
-        movieQuizView.activityIndicator.isHidden = false
         movieQuizView.activityIndicator.startAnimating()
     }
     
     private func hideLoadingIndicator() {
-        self.movieQuizView.activityIndicator.isHidden = true
         self.movieQuizView.activityIndicator.stopAnimating()
     }
     
@@ -133,10 +131,9 @@ extension MovieQuizViewController {
         
         movieQuizView.yesButton.isEnabled = false
         movieQuizView.noButton.isEnabled = false
-        // даём разрешение на рисование рамки
+
         movieQuizView.previewImage.layer.masksToBounds = true
         movieQuizView.previewImage.layer.borderWidth = 8
-        // делаем рамку
         movieQuizView.previewImage.layer.borderColor = isCorrectAnswer
             ? UIColor.ypGreen.cgColor
             : UIColor.ypRed.cgColor

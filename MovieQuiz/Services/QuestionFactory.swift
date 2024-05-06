@@ -25,17 +25,13 @@ final class QuestionFactory: QuestionFactoryProtocol {
                 
                 switch result {
                 case .success(let mostPopularMovies):
-                    print("load data sucess")
                     self.movies = mostPopularMovies.items
                     
-                    // сообщаем, что данные загрузились
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
                         self.delegate?.didLoadDataFromServer()
                     }
                 case .failure(let error):
-                    print("load data failed")
-                    // сообщаем об ошибке нашему MovieQuizViewController
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
                         self.delegate?.didFailToLoadData(with: error)
@@ -46,21 +42,6 @@ final class QuestionFactory: QuestionFactoryProtocol {
     }
     
     /*
-    func loadData() {
-        moviesLoader.loadMovies { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case .success(let mostPopularMovies):
-                    self.movies = mostPopularMovies.items
-                    self.delegate?.didLoadDataFromServer()
-                case .failure(let error):
-                    self.delegate?.didFailToLoadData(with: error)
-                }
-            }
-        }
-    }
-     
     private let questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",

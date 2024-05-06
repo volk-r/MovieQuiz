@@ -17,29 +17,11 @@ struct MoviesLoader: MoviesLoadingProtocol {
     
     // MARK: - URL
     private var mostPopularMoviesUrl: URL {
-        // Если мы не смогли преобразовать строку в URL, то приложение упадёт с ошибкой
         guard let url = URL(string: AppApiConstants.mostPopularMoviesUrl + AppApiConstants.apiKey) else {
             preconditionFailure("Unable to construct mostPopularMoviesUrl")
         }
         return url
     }
-    
-    // MARK: - loadMovies with closure
-//    func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) {
-//        networkClient.fetch(url: mostPopularMoviesUrl) { result in
-//            switch result {
-//            case .success(let data):
-//                do {
-//                    let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
-//                    handler(.success(mostPopularMovies))
-//                } catch {
-//                    handler(.failure(error))
-//                }
-//            case .failure(let error):
-//                handler(.failure(error))
-//            }
-//        }
-//    }
     
     // MARK: - loadMovies with async/await
     func loadMovies(handler: @escaping (Result<MostPopularMovies, Error>) -> Void) async {
@@ -48,14 +30,12 @@ struct MoviesLoader: MoviesLoadingProtocol {
             let mostPopularMovies = try JSONDecoder().decode(MostPopularMovies.self, from: data)
 
             if !mostPopularMovies.errorMessage.isEmpty {
-                print("Error in loaded data: \(mostPopularMovies.errorMessage)")
                 handler(.failure(mostPopularMovies.errorMessage))
                 return
             }
             
             handler(.success(mostPopularMovies))
         } catch {
-            print("Error during data loading: \(error)")
             handler(.failure(error))
         }
     }
