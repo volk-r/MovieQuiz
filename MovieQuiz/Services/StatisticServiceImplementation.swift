@@ -42,7 +42,7 @@ final class StatisticServiceImplementation: StatisticService {
         }
         set {
             guard let data = try? JSONEncoder().encode(newValue) else {
-                print("Невозможно сохранить результат bestGame")
+                print("Can't save result of bestGame")
                 return
             }
             
