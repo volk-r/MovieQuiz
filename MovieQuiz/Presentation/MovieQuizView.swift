@@ -55,6 +55,8 @@ final class MovieQuizView: UIView {
         button.layer.cornerRadius = 15
         button.backgroundColor = .ypWhite
         
+        button.accessibilityIdentifier = "No"
+        
         return button
     }()
     
