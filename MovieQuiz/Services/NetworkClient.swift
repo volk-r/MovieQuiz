@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct NetworkClient {
+protocol NetworkRouting {
+    func fetchAsync(url: URL) async throws -> Data
+}
+
+struct NetworkClient: NetworkRouting {
     
     private enum NetworkError: Error {
         case codeError

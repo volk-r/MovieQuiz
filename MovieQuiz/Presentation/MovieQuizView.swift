@@ -70,6 +70,8 @@ final class MovieQuizView: UIView {
         button.layer.cornerRadius = 15
         button.backgroundColor = .ypWhite
         
+        button.accessibilityIdentifier = "Yes"
+        
         return button
     }()
     
@@ -96,6 +98,8 @@ final class MovieQuizView: UIView {
         label.textColor = .ypWhite
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
+        label.accessibilityIdentifier = "Index"
+        
         return label
     }()
     
@@ -121,6 +125,8 @@ final class MovieQuizView: UIView {
         imageView.backgroundColor = .ypWhite
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 20
+        
+        imageView.accessibilityIdentifier = "Poster"
         
         return imageView
     }()
