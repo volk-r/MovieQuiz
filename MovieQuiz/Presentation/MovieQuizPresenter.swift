@@ -93,6 +93,16 @@ extension MovieQuizPresenter {
             return
         }
         
+        let message = makeResultsMessage()
+        let viewModel = QuizResultsViewModel(
+            title: "Этот раунд окончен!",
+            text: message,
+            buttonText: "Сыграть ещё раз")
+        
+        viewController?.showQuizResults(quiz: viewModel)
+    }
+    
+    private func makeResultsMessage() -> String {
         statisticService.store(correct: correctAnswers, total: questionsAmount)
         
         let bestGame = statisticService.bestGame
@@ -103,12 +113,7 @@ extension MovieQuizPresenter {
             Срендяя точность \(String(format: "%.2f", statisticService.totalAccuracy))%
         """
         
-        let viewModel = QuizResultsViewModel(
-            title: "Этот раунд окончен!",
-            text: message,
-            buttonText: "Сыграть ещё раз")
-        
-        viewController?.showQuizResults(quiz: viewModel)
+        return message
     }
 }
 
