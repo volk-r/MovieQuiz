@@ -91,11 +91,13 @@ extension MovieQuizViewController {
         movieQuizView.indexLabel.text = step.questionNumber
     }
     
-    func showQuizResults(quiz result: QuizResultsViewModel) {
+    func showQuizResults() {
+        let message = presenter.makeResultsMessage()
+        
         let model = AlertModel(
-            title: result.title,
-            message: result.text, 
-            buttonText: result.buttonText) { [weak self] in
+            title: "Этот раунд окончен!",
+            message: message, 
+            buttonText: "Сыграть ещё раз") { [weak self] in
                 guard let self else { return }
                 
                 self.presenter.restartGame()

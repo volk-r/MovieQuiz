@@ -59,6 +59,20 @@ final class MovieQuizPresenter {
             self.viewController?.allowButtonsClick(true)
         }
     }
+    
+    func makeResultsMessage() -> String {
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        let bestGame = statisticService.bestGame
+        let message = """
+            Ваш результат: \(correctAnswers)/\(questionsAmount)
+            Количество сыгранных квизов: \(statisticService.gamesCount)
+            Рекорд \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString)
+            Срендяя точность \(String(format: "%.2f", statisticService.totalAccuracy))%
+        """
+        
+        return message
+    }
 }
 
 // MARK: - private functions
@@ -93,27 +107,7 @@ extension MovieQuizPresenter {
             return
         }
         
-        let message = makeResultsMessage()
-        let viewModel = QuizResultsViewModel(
-            title: "Этот раунд окончен!",
-            text: message,
-            buttonText: "Сыграть ещё раз")
-        
-        viewController?.showQuizResults(quiz: viewModel)
-    }
-    
-    private func makeResultsMessage() -> String {
-        statisticService.store(correct: correctAnswers, total: questionsAmount)
-        
-        let bestGame = statisticService.bestGame
-        let message = """
-            Ваш результат: \(correctAnswers)/\(questionsAmount)
-            Количество сыгранных квизов: \(statisticService.gamesCount)
-            Рекорд \(bestGame.correct)/\(bestGame.total) \(bestGame.date.dateTimeString)
-            Срендяя точность \(String(format: "%.2f", statisticService.totalAccuracy))%
-        """
-        
-        return message
+        viewController?.showQuizResults()
     }
 }
 
