@@ -46,8 +46,8 @@ extension MovieQuizViewController {
         movieQuizView.previewImage.layer.masksToBounds = true
         movieQuizView.previewImage.layer.borderWidth = 8
         movieQuizView.previewImage.layer.borderColor = isCorrectAnswer
-            ? UIColor.ypGreen.cgColor
-            : UIColor.ypRed.cgColor
+        ? UIColor.ypGreen.cgColor
+        : UIColor.ypRed.cgColor
         movieQuizView.previewImage.layer.cornerRadius = 20
     }
     
@@ -71,18 +71,18 @@ extension MovieQuizViewController {
     func showNetworkError(message: String) {
         hideLoadingIndicator()
         
-        let model = AlertModel(
+        let viewModel = QuizResultsViewModel(
             title: "Ошибка",
-            message: message,
-            buttonText: "Попробовать ещё раз") { [weak self] in
-                guard let self else { return }
-                
-                self.presenter.restartGame()
-                // load data one more time
-                self.presenter.loadData()
-            }
+            text: message,
+            buttonText: "Попробовать ещё раз")
         
-        alertPresenter?.callAlert(with: model)
+        showMessage(with: viewModel) { [weak self] in
+            guard let self else { return }
+            
+            self.presenter.restartGame()
+            // load data one more time
+            self.presenter.loadData()
+        }
     }
     
     func show(quiz step: QuizStepViewModel) {
@@ -93,17 +93,26 @@ extension MovieQuizViewController {
     
     func showQuizResults() {
         let message = presenter.makeResultsMessage()
-        
-        let model = AlertModel(
+        let viewModel = QuizResultsViewModel(
             title: "Этот раунд окончен!",
-            message: message, 
-            buttonText: "Сыграть ещё раз") { [weak self] in
-                guard let self else { return }
-                
-                self.presenter.restartGame()
+            text: message,
+            buttonText: "Сыграть ещё раз")
+        
+        showMessage(with: viewModel) { [weak self] in
+            guard let self else { return }
+            
+            self.presenter.restartGame()
+        }
+    }
+    
+    private func showMessage(with model: QuizResultsViewModel, handler: @escaping () -> Void) {
+        let model = AlertModel(
+            title: model.title,
+            message: model.text,
+            buttonText: model.buttonText) {
+                handler()
             }
         
         alertPresenter?.callAlert(with: model)
     }
-    
 }
