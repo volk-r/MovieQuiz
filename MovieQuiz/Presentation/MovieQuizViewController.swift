@@ -46,8 +46,8 @@ extension MovieQuizViewController {
         movieQuizView.previewImage.layer.masksToBounds = true
         movieQuizView.previewImage.layer.borderWidth = 8
         movieQuizView.previewImage.layer.borderColor = isCorrectAnswer
-        ? UIColor.ypGreen.cgColor
-        : UIColor.ypRed.cgColor
+            ? UIColor.ypGreen.cgColor
+            : UIColor.ypRed.cgColor
         movieQuizView.previewImage.layer.cornerRadius = 20
     }
     
