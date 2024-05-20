@@ -1,5 +1,19 @@
 import UIKit
 
+protocol MovieQuizViewControllerProtocol: AnyObject {
+    func show(quiz step: QuizStepViewModel)
+    
+    func highlightImageBorder(isCorrectAnswer: Bool)
+    
+    func hideImageBorder()
+    func allowButtonsClick(_ isEnabled: Bool)
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
+    
+    func showNetworkError(message: String)
+    func showQuizResults()
+}
+
 final class MovieQuizViewController: UIViewController {
     // MARK: PROPERTIES
     override internal var preferredStatusBarStyle: UIStatusBarStyle {
@@ -41,7 +55,7 @@ final class MovieQuizViewController: UIViewController {
 
 // MARK: - FUNCTIONS
 
-extension MovieQuizViewController {
+extension MovieQuizViewController: MovieQuizViewControllerProtocol {
     func highlightImageBorder(isCorrectAnswer: Bool) {
         movieQuizView.previewImage.layer.masksToBounds = true
         movieQuizView.previewImage.layer.borderWidth = 8

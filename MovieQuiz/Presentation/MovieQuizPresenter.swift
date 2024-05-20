@@ -16,9 +16,9 @@ final class MovieQuizPresenter {
     private lazy var statisticService: StatisticService = StatisticServiceImplementation()
     
     private var questionFactory: QuestionFactoryProtocol?
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -73,18 +73,18 @@ final class MovieQuizPresenter {
         
         return message
     }
-}
-
-// MARK: - private functions
-
-extension MovieQuizPresenter {
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
         QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
-    
+}
+
+// MARK: - private functions
+
+extension MovieQuizPresenter {    
     private func isLastQuestion() -> Bool {
         currentQuestionIndex == questionsAmount - 1
     }
