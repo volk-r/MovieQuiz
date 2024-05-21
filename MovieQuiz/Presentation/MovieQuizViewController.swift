@@ -1,19 +1,5 @@
 import UIKit
 
-protocol MovieQuizViewControllerProtocol: AnyObject {
-    func show(quiz step: QuizStepViewModel)
-    
-    func highlightImageBorder(isCorrectAnswer: Bool)
-    
-    func hideImageBorder()
-    func allowButtonsClick(_ isEnabled: Bool)
-    func showLoadingIndicator()
-    func hideLoadingIndicator()
-    
-    func showNetworkError(message: String)
-    func showQuizResults()
-}
-
 final class MovieQuizViewController: UIViewController {
     // MARK: PROPERTIES
     override internal var preferredStatusBarStyle: UIStatusBarStyle {
@@ -82,51 +68,13 @@ extension MovieQuizViewController: MovieQuizViewControllerProtocol {
         movieQuizView.activityIndicator.stopAnimating()
     }
     
-    func showNetworkError(message: String) {
-        hideLoadingIndicator()
-        
-        let viewModel = QuizResultsViewModel(
-            title: "Ошибка",
-            text: message,
-            buttonText: "Попробовать ещё раз")
-        
-        showMessage(with: viewModel) { [weak self] in
-            guard let self else { return }
-            
-            self.presenter.restartGame()
-            // load data one more time
-            self.presenter.loadData()
-        }
-    }
-    
     func show(quiz step: QuizStepViewModel) {
         movieQuizView.previewImage.image = step.image
         movieQuizView.questionLabel.text = step.question
         movieQuizView.indexLabel.text = step.questionNumber
     }
     
-    func showQuizResults() {
-        let message = presenter.makeResultsMessage()
-        let viewModel = QuizResultsViewModel(
-            title: "Этот раунд окончен!",
-            text: message,
-            buttonText: "Сыграть ещё раз")
-        
-        showMessage(with: viewModel) { [weak self] in
-            guard let self else { return }
-            
-            self.presenter.restartGame()
-        }
-    }
-    
-    private func showMessage(with model: QuizResultsViewModel, handler: @escaping () -> Void) {
-        let model = AlertModel(
-            title: model.title,
-            message: model.text,
-            buttonText: model.buttonText) {
-                handler()
-            }
-        
+    func showAlert(model: AlertModel) {
         alertPresenter?.callAlert(with: model)
     }
 }
